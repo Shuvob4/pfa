@@ -1,0 +1,40 @@
+[project]
+name = "fpa"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Shuvo Barman", email = "20889458+Shuvob4@users.noreply.github.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "dbt-duckdb>=1.11.1",
+    "duckdb>=1.5.6",
+    "httpx>=0.28.1",
+    "pdfplumber>=0.11.10",
+    "platformdirs>=4.12.4",
+    "pydantic>=2.14.1",
+    "streamlit>=1.65.0",
+    "typer>=0.27.3",
+]
+
+[project.scripts]
+fpa = "fpa.cli:app"
+
+[build-system]
+requires = ["uv_build>=0.13.5,<0.14.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.6.2",
+    "pytest>=9.1.1",
+    "ruff>=0.17.2",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]

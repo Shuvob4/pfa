@@ -1,0 +1,29 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+*.pyc
+
+# Virtual environments
+.venv/
+
+# Cache Folder
+.ruff_cache/
+.pytest_cache/
+
+# Data
+*.duckdb
+*.duckdb.wal
+*.pdf
+tests/private/
+
+# Local Config file
+
+# macOS
+.DS_Store
+src/.DS_Store
+
+
