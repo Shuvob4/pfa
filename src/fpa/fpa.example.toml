@@ -1,0 +1,10 @@
+# fpa configuration. Delete a line to fall back to its default.
+
+[paths]
+# Empty = your OS's standard app-data folder.
+data_dir = ""
+
+[llm]
+enabled = true
+base_url = "http://localhost:11434"
+model = "qwen3:4b"

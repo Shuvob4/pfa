@@ -20,7 +20,8 @@ wheels/
 *.pdf
 tests/private/
 
-# Local Config file
+# Local config (personal settings, never committed)
+fpa.toml
 
 # macOS
 .DS_Store
