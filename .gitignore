@@ -27,4 +27,5 @@ fpa.toml
 .DS_Store
 src/.DS_Store
 
-
+# Claude Artifacts
+Claude outputs/
