@@ -1,11 +1,42 @@
 # Personal Finance Assistant
 
-### Why choose `uv` instead of `conda` or `pip`
+### Environment Management
 
-- `uv` -> is a faster python package and environment manager; which, ensures every machine running the project gets the exact same software setup. To make this repo installed in any machine (macOS, Linux, Windows), needed something which installs `python` itself, builds virtual environment(`.venv`) and handle all dependencies in one command. when executing `uv add`, it generates a `uv.lock` file which contains the exact version and checksums of every library. This ensures the absolute reproducibility on any operating machine.
+**Chose:** `uv` with a committed `uv.lock` file.
 
-- `Why not conda` -> `conda` is slow, heavy and lacks a cross-platform lockfile. One of the constraints of the project is to use a locla LLM  and to run everything on most machines, 8 GB RAM was set as a requirement and `conda` with `local LLM` becomes too bulky to run smoothly. 
+**Rejected:** `conda`
 
-- `Why not pip?` -> while `pip` installs packages and it requires separate tools to manage the virtual environment and doesn't natively enforce strict cross-platform lockfiles. 
+**Why:** `uv` provides a single, exceptionally fast tool that installs Python itself, builds the virutal environment, and manage dependencies across different operating systems. It generates a strict cross-platform lockfile (`uv.lock`), which ensures absolute reproducibility. `Conda` is slower, lacks standard cross-platform lockfile, and it's a separate installation.
 
-By using `uv` able to replace multiple manual setup steps and thus anyone can run this tool within 15 mins and with the help of `README.md`
+
+### Configuration and Data Paths
+
+**Chose:** Dynamic OS-standard directories using *Python's* `platformdirs` library.
+
+**Rejected:** Hard-coded absolute paths(e.g. `/Users/janedoe/`) and storing configuration/data files directly inside the Git repository.
+
+**Why:** Hard-coded paths breaks instantly on another person's machine due to folder structure. Storing config files in the repo creates major securtiy risks of accidentally committing sensitive personal settings. Also, when a python project is packaged and installed on a server it runs from a read-only system directory and doesn't have localized `repo folder` to read or write to. `platformdirs` makes the pipeline fully portable by automatically locating the correct writeable app directories for the specific operating system it runs on. 
+
+### Configuration Validation
+
+**Chose:** Pydantic with `extra="forbid"`
+
+**Rejected:** Pydantic's default behavior, which silently ignores unknown keys.
+
+**Why:** If a user makes a typo error in their config file(e.g. typing `modle` instead of `model`), default Pydantic will silently drop the invalid key and apply the default setting, which will be annoying at the time of debugging as the user might believe they have changed a setting but the program ingores it. Using `extra="forbid"` enforces the principal of falling loudly and provifing an immediate, clear error message.
+
+### Template Packaging
+
+**Chose:** Placing `fpa.example.toml` inside the `src/fpa/` package directory and reading it with `importlib.resources`
+
+**Rejected:** Storing the template at the repository root.
+
+**Why:** When a python project is installed by an end user, only the files explicitly inside the package directory(`src/`) are bundled into the installation. If the template is left at the root, a user who installs the tool will not receive the file and commands like `fpa init` will crash because they cannot find the template to copy.
+
+### Repository Visibility
+
+**Chose:** Public GitHub repo.
+
+**Rejected:** Private GitHub repo.
+
+**Why:** To ensure true cross-platform compatibility, the project must be tested on macOS, Windows, and Linux runners. GitHub Actions provides free, unlimited runner minutes for public repositories, whereas Mac and Windows runners deplete private repo minute allowances very quickly.  `.gitignore` explicitly blocks personal PDF's, local databases, and the `fpa.toml` personal settings from being uploaded.
